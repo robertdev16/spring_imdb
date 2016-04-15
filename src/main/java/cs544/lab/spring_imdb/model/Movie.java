@@ -157,6 +157,22 @@ public class Movie {
 	public void removeComment(Comment c){
 		commentList.remove(c);
 	}
+	
+	public List<Director> getDirectorList() {
+		return directorList;
+	}
+
+	public List<Writer> getWriterList() {
+		return writerList;
+	}
+
+	public List<MovieChar> getMovieCharList() {
+		return movieCharList;
+	}
+
+	public List<Comment> getCommentList() {
+		return commentList;
+	}
 
 	@Override
 	public String toString() {

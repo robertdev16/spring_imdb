@@ -1,5 +1,4 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml11.dtd">
@@ -12,8 +11,10 @@
 	<h1 align="center">Movies in tiny IMDB storage:</h1>
 	<form action="titleFilter" method="post">
 		<input type="search" name="titleSearch" placeholder="Please input movie title..." />
-		<input type="submit" value="Search" /> ${lastSearchTitle}
+		<input type="hidden"  name="${_csrf.parameterName}"   value="${_csrf.token}"/>
+		<input type="submit" value="Search" /> Current keyword: ${lastSearchTitle}
 	</form>
+	<br/>
 	<table border="1" cellpadding="10">
 		<caption>Movie List (Click on movie title for detail
 			information)</caption>

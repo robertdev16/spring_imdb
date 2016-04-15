@@ -80,7 +80,7 @@
  -->
 
 	<sec:http>
-		<sec:intercept-url pattern="/movieDetail.jsp" access="hasAnyRole('ROLE_USER','ROLE_ANONYMOUS')" />
+		<sec:intercept-url pattern="movieDetail.jsp" access="hasAnyRole('ROLE_USER','ROLE_ANONYMOUS')" />
 		<sec:intercept-url pattern="/**" access="hasRole('ROLE_ANONYMOUS')" />
 		<sec:form-login />
 		<sec:logout />

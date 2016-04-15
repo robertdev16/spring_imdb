@@ -47,7 +47,7 @@ public class MovieService {
 
 	@Transactional
 	@RequestMapping(value = "/movies", method = RequestMethod.GET)
-	public String getAll(Model model) {
+	public String movieList(Model model) {
 		logger.info("Get all movies:");
 
 		model.addAttribute("movies", movieDao.findAll(new Sort(Direction.ASC, "title")));
@@ -56,8 +56,8 @@ public class MovieService {
 	}
 	
 	@Transactional
-	@RequestMapping(value = "/titleFilter", method = RequestMethod.GET)
-	public String filterByTitle(@RequestParam("titleSearch") String titleSearch, Model model) {
+	@RequestMapping(value = "/titleFilter", method = RequestMethod.POST)
+	public String movieFilterByTitle(@RequestParam("titleSearch") String titleSearch, Model model) {
 		if (titleSearch.isEmpty())
 			return "redirect:/movies";
 		
@@ -73,6 +73,16 @@ public class MovieService {
 	@RequestMapping(value="/moviepic/{movieId}", method=RequestMethod.GET, produces=MediaType.IMAGE_JPEG_VALUE)
 	public @ResponseBody byte[] getMoviePic(@PathVariable int movieId){
 		return movieDao.findOne(movieId).getPoster();
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/movie/{movieId}", method = RequestMethod.GET)
+	public String movieDetail(@PathVariable int movieId, Model model) {
+		logger.info("Get movie for movieId: {}", movieId);
+
+		model.addAttribute("movie", movieDao.findOne(movieId));
+		
+		return "movieDetail";
 	}
 	
 }

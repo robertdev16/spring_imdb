@@ -28,7 +28,10 @@ public class Director extends Artist {
 		this.birthPlace = birthPlace;
 	}
 	
-	
+	public List<Movie> getMovieList() {
+		return movieList;
+	}
+
 	public void addMovie(Movie m){
 		movieList.add(m);
 	}
