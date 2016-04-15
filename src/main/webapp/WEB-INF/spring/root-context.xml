@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sec="http://www.springframework.org/schema/security" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context.xsd 
+	http://www.springframework.org/schema/data/jpa 
+	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd 
+	http://www.springframework.org/schema/security 
+    http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+
+	<context:annotation-config />
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://localhost/spring_imdb?useSSL=false&amp;createDatabaseIfNotExist=true" />
+		<property name="username" value="root" />
+		<property name="password" value="mumeamumea" />
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="use_sql_comments">true</prop>
+			</props>
+		</property>
+		<property name="packagesToScan" value="cs544.lab.spring_imdb.model" />
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<jpa:repositories base-package="cs544.lab.spring_imdb.dao"
+		transaction-manager-ref="transactionManager"
+		entity-manager-factory-ref="entityManagerFactory" />
+		
+<!-- 	
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+		<property name="interceptors">  
+			<list>
+				<bean class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor">  
+					<property name="entityManagerFactory" ref="entityManagerFactory" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">  
+		<property name="webBindingInitializer">  
+        Configures Spring MVC DataBinder instances  
+			<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">  
+				<property name="validator">
+					<bean class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+				</property>  
+			</bean>  
+		</property>  
+	</bean>
+ -->
+
+	<sec:http>
+		<sec:intercept-url pattern="/movieDetail.jsp" access="hasAnyRole('ROLE_USER','ROLE_ANONYMOUS')" />
+		<sec:intercept-url pattern="/**" access="hasRole('ROLE_ANONYMOUS')" />
+		<sec:form-login />
+		<sec:logout />
+	</sec:http>
+
+	<sec:authentication-manager>
+		<sec:authentication-provider>
+			<sec:jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="select username, password, true as enabled from user where username = ?"
+				authorities-by-username-query="select u.username, ur.roleSet as authority from user u, user_roleset ur where u.userId = ur.User_userId and u.username = ?" />
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+</beans>
