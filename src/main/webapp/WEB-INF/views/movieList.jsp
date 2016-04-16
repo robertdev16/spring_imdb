@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Movies in tiny IMDB storage</title>
+<title>Movies - tiny IMDB</title>
 </head>
 <body>
 	<h1 align="center">Movies in tiny IMDB storage:</h1>

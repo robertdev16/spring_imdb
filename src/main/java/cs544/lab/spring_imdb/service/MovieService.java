@@ -18,8 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cs544.lab.spring_imdb.dao.IActorDao;
+import cs544.lab.spring_imdb.dao.IArtistDao;
+import cs544.lab.spring_imdb.dao.IDirectorDao;
 import cs544.lab.spring_imdb.dao.IMovieDao;
 import cs544.lab.spring_imdb.dao.IUserDao;
+import cs544.lab.spring_imdb.dao.IWriterDao;
+import cs544.lab.spring_imdb.model.Actor;
+import cs544.lab.spring_imdb.model.Director;
+import cs544.lab.spring_imdb.model.Writer;
 
 
 /**
@@ -35,6 +41,15 @@ public class MovieService {
 	
 	@Resource
 	private IActorDao actorDao;
+	
+	@Resource
+	private IDirectorDao directorDao;
+	
+	@Resource
+	private IWriterDao writerDao;
+	
+	@Resource
+	private IArtistDao artistDao;
 	
 	@Resource
 	private IUserDao userDao;
@@ -85,4 +100,45 @@ public class MovieService {
 		return "movieDetail";
 	}
 	
+	@Transactional
+	@RequestMapping(value = "/director/{artistId}", method = RequestMethod.GET)
+	public String directorDetail(@PathVariable int artistId, Model model) {
+		logger.info("Get director for artistId: {}", artistId);
+
+		Director d = directorDao.findOne(artistId);
+		model.addAttribute("director", d);
+		model.addAttribute("picNum", d.getPhotoList().size()-1);
+		
+		return "directorDetail";
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/writer/{artistId}", method = RequestMethod.GET)
+	public String writerDetail(@PathVariable int artistId, Model model) {
+		logger.info("Get writer for artistId: {}", artistId);
+
+		Writer w = writerDao.findOne(artistId);
+		model.addAttribute("writer", w);
+		model.addAttribute("picNum", w.getPhotoList().size()-1);
+		
+		return "writerDetail";
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/actor/{artistId}", method = RequestMethod.GET)
+	public String actorDetail(@PathVariable int artistId, Model model) {
+		logger.info("Get actor for artistId: {}", artistId);
+
+		Actor a = actorDao.findOne(artistId);
+		model.addAttribute("actor", a);
+		model.addAttribute("picNum", a.getPhotoList().size()-1);
+		
+		return "actorDetail";
+	}
+	
+	@Transactional
+	@RequestMapping(value="/artistpic/{artistId}/{idx}", method=RequestMethod.GET, produces=MediaType.IMAGE_JPEG_VALUE)
+	public @ResponseBody byte[] getArtistPic(@PathVariable("artistId") int artistId, @PathVariable("idx") int idx){
+		return artistDao.findOne(artistId).getPhotoList().get(idx).getPhotoBytes();
+	}
 }

@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Movies in tiny IMDB storage</title>
+<title>${movie.title} - tiny IMDB</title>
 </head>
 <body>
 	<h2 align="center">${movie.title}</h2>
@@ -36,6 +36,7 @@
 			<td>${movie.runtime}min</td>
 			<td>${movie.rating}</td>
 		</tr>
+		<tr><td colspan="7"> </td></tr>
 		<tr>
 			<th  colspan="7">
 			Director List
@@ -48,6 +49,7 @@
 			</c:forEach>
 			</td>
 		</tr>
+		<tr><td colspan="7"> </td></tr>
 		<tr>
 			<th  colspan="7">
 			Writer List
@@ -60,6 +62,7 @@
 			</c:forEach>
 			</td>
 		</tr>
+		<tr><td colspan="7"> </td></tr>
 		<tr>
 			<th  colspan="3">
 			Actor Name
@@ -78,8 +81,35 @@
 			</td>
 		</tr>
 		</c:forEach>
-
-
+		
+		<tr><td colspan="7"> </td></tr>
+		<tr>
+			<th  colspan="7">
+			Comment List
+			</th>
+		</tr>
+		<c:forEach var="comment" items="${movie.commentList}">
+		<tr>
+			<td>
+			Rating: ${comment.rating}
+			</td>
+			<td>
+			Posted by ${comment.user.loginName}
+			</td>
+			<td  colspan="2">
+			${comment.title}
+			</td>
+			<td  colspan="3">
+			${comment.date} ${comment.time}
+			</td>
+		</tr>
+		<tr>
+			<td colspan="7">
+			${comment.content}
+			</td>
+		</tr>
+		<tr><td colspan="7"> </td></tr>
+		</c:forEach>
 	</table>
 	
 	<p>
