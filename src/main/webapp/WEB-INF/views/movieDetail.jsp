@@ -13,7 +13,7 @@
 <body>
 	<h2 align="center">${movie.title}</h2>
 
-	<br />
+	<a href="../movies">Back to movie list...</a><br />
 	<table border="1" cellpadding="10">
 		<caption>Detail Information</caption>
 		<tr>
@@ -126,7 +126,8 @@
 	<p>
 	<sec:authorize access="hasRole('ROLE_USER')">
 		<sec:authentication property="principal" var="authentication"/>
-		Welcome ${authentication.username}!
+		Welcome <font color="red">${authentication.username}!</font>
+		Please give your comment and rating here and click "Post" button.<br/>
 		<form action="../postComment" method="post">
 			Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="title" size="45" 
 			placeholder="A title for your comment..." required="required" />&nbsp;&nbsp;

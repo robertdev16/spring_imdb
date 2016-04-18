@@ -24,7 +24,7 @@
 		<property name="url"
 			value="jdbc:mysql://localhost/spring_imdb?useSSL=false&amp;createDatabaseIfNotExist=true" />
 		<property name="username" value="root" />
-		<property name="password" value="mumeamumea" />
+		<property name="password" value="password" />
 	</bean>
 
 	<bean id="entityManagerFactory"

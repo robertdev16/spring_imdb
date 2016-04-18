@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h2 align="center">Actor Information</h2>
-	<br />
+	<a href="../movies">Back to movie list...</a><br /><br />
 	<table border="1" cellpadding="10">
 		<tr>
 			<td rowspan="2"><img src="../artistpic/${actor.artistId}/0" /></td>

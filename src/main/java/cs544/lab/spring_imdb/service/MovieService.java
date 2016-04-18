@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cs544.lab.spring_imdb.dao.IActorDao;
 import cs544.lab.spring_imdb.dao.IArtistDao;
+import cs544.lab.spring_imdb.dao.ICommentDao;
 import cs544.lab.spring_imdb.dao.IDirectorDao;
 import cs544.lab.spring_imdb.dao.IMovieDao;
 import cs544.lab.spring_imdb.dao.IUserDao;
@@ -26,8 +27,6 @@ import cs544.lab.spring_imdb.dao.IWriterDao;
 import cs544.lab.spring_imdb.model.Actor;
 import cs544.lab.spring_imdb.model.Comment;
 import cs544.lab.spring_imdb.model.Director;
-import cs544.lab.spring_imdb.model.Movie;
-import cs544.lab.spring_imdb.model.User;
 import cs544.lab.spring_imdb.model.Writer;
 
 
@@ -56,6 +55,9 @@ public class MovieService {
 	
 	@Resource
 	private IUserDao userDao;
+	
+	@Resource
+	private ICommentDao commentDao;
 	
 	
 	@RequestMapping("/")
@@ -116,12 +118,9 @@ public class MovieService {
 			@RequestParam("rating") float rating) {
 		logger.info("Post comment by: {}, then redirect to movieId: {}", username, movieId);
 		Comment comment = new Comment(title, content, rating);
-		User user = userDao.findByLoginName(username).get(0);
-		comment.setUser(user);
-		Movie movie = movieDao.findOne(movieId);
-		comment.setMovie(movie);
-		userDao.save(user);
-		movieDao.save(movie);		
+		comment.setUser(userDao.findByLoginName(username).get(0));
+		comment.setMovie(movieDao.findOne(movieId));
+		commentDao.saveAndFlush(comment);
 		
 		return "redirect:/movie/" + movieId;
 	}	
