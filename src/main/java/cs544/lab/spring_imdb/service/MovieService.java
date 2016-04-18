@@ -24,7 +24,10 @@ import cs544.lab.spring_imdb.dao.IMovieDao;
 import cs544.lab.spring_imdb.dao.IUserDao;
 import cs544.lab.spring_imdb.dao.IWriterDao;
 import cs544.lab.spring_imdb.model.Actor;
+import cs544.lab.spring_imdb.model.Comment;
 import cs544.lab.spring_imdb.model.Director;
+import cs544.lab.spring_imdb.model.Movie;
+import cs544.lab.spring_imdb.model.User;
 import cs544.lab.spring_imdb.model.Writer;
 
 
@@ -99,6 +102,29 @@ public class MovieService {
 		
 		return "movieDetail";
 	}
+	
+	@RequestMapping(value = "/postLogin", method = RequestMethod.POST)
+	public String redirectPostLogin(@RequestParam("movieId") int movieId) {
+		logger.info("Process login, then redirect to movieId: {}", movieId);
+		return "redirect:/movie/" + movieId;
+	}	
+	
+	@Transactional
+	@RequestMapping(value = "/postComment", method = RequestMethod.POST)
+	public String postComment(@RequestParam("movieId") int movieId, @RequestParam("username") String username,
+			@RequestParam("title") String title, @RequestParam("content") String content,
+			@RequestParam("rating") float rating) {
+		logger.info("Post comment by: {}, then redirect to movieId: {}", username, movieId);
+		Comment comment = new Comment(title, content, rating);
+		User user = userDao.findByLoginName(username).get(0);
+		comment.setUser(user);
+		Movie movie = movieDao.findOne(movieId);
+		comment.setMovie(movie);
+		userDao.save(user);
+		movieDao.save(movie);		
+		
+		return "redirect:/movie/" + movieId;
+	}	
 	
 	@Transactional
 	@RequestMapping(value = "/director/{artistId}", method = RequestMethod.GET)

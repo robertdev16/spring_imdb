@@ -24,7 +24,7 @@
 		<property name="url"
 			value="jdbc:mysql://localhost/spring_imdb?useSSL=false&amp;createDatabaseIfNotExist=true" />
 		<property name="username" value="root" />
-		<property name="password" value="password" />
+		<property name="password" value="mumeamumea" />
 	</bean>
 
 	<bean id="entityManagerFactory"
@@ -80,11 +80,9 @@
  -->
 
 	<sec:http>
-		<sec:intercept-url pattern="movieDetail.jsp" access="hasAnyRole('ROLE_USER','ROLE_ANONYMOUS')" />
-		<sec:intercept-url pattern="/**" access="hasRole('ROLE_ANONYMOUS')" />
-		<sec:form-login default-target-url="/WEB-INF/views/movieDetail.jsp" 
-			authentication-failure-url="/WEB-INF/views/movieDetail.jsp" />
-		<sec:logout />
+		<sec:intercept-url pattern="/postLogin" access="hasRole('ROLE_USER')" />
+		<sec:intercept-url pattern="/**" access="hasAnyRole('ROLE_USER','ROLE_ANONYMOUS')" />
+		<sec:http-basic />
 	</sec:http>
 
 	<sec:authentication-manager>

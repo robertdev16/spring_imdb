@@ -114,10 +114,9 @@
 	
 	<p>
 	<sec:authorize access="hasRole('ROLE_ANONYMOUS')">
-		<form action="<c:url value='j_spring_security_check' />" method="post">
+		<form action="../postLogin" method="post">
 			Please login to post comment. <br/>
-			Username: <input type="text" name="username" required="required" /> <br/>
-			Password: <input type="password" name="password" required="required" /> <br/>
+			<input type="hidden" name="movieId" value="${movie.movieId}" />
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			<input type="submit" value="Login" />
 		</form>
@@ -126,13 +125,19 @@
 	
 	<p>
 	<sec:authorize access="hasRole('ROLE_USER')">
+		<sec:authentication property="principal" var="authentication"/>
+		Welcome ${authentication.username}!
 		<form action="../postComment" method="post">
-			<input type="text" name="title" 
-			placeholder="A title for your comment..." required="required" /> <br/>
-			<textarea name="content" placeholder="Please input your comment..." 
-			required="required"></textarea> <br/>
+			Title:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="title" size="45" 
+			placeholder="A title for your comment..." required="required" />&nbsp;&nbsp;
+			Rating (1.0 - 10.0): 
+			<input type="text" name="rating" size="5" required="required" /><br/><br/>
+			Content: <textarea name="content" placeholder="Please input your comment..." 
+			required="required" rows="6" cols="60"></textarea> <br/><br/>
+			<input type="hidden" name="username" value="${authentication.username}" />
+			<input type="hidden" name="movieId" value="${movie.movieId}" />
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			<input type="submit" value="Post" />
+			<input type="submit" value="Post Comment" />
 		</form>
 	</sec:authorize>
 	</p>
