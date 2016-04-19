@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 @Entity
 public class Movie {
@@ -47,6 +48,7 @@ public class Movie {
 	private List<MovieChar> movieCharList = new ArrayList<MovieChar>();
 		
 	@OneToMany(mappedBy="movie")
+	@OrderBy("date, time")
 	private List<Comment> commentList = new ArrayList<Comment>();
 	
 	
