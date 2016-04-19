@@ -181,10 +181,11 @@ public class InitDataService {
 		}
 	    ByteArrayOutputStream output = new ByteArrayOutputStream();
 	    byte[] buffer = new byte[4096];
+	    int n;
 
 	    try {
-			while (input.read(buffer)>0) {
-			    output.write(buffer);
+			while ((n=input.read(buffer))>0) {
+			    output.write(buffer, 0, n);
 			}
 		} catch (IOException e) {
 			logger.error("readPic ERROR: filename: {}", filename);
